@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-    <meta name="description" content="HDEV SMPP Tester">
-    <meta name="keywords" content="SMPP, SMPP Tester, HDEV">
-    <meta name="author" content="HDEV TECH Ltd">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="HDEV SMPP Tester">
+  <meta name="keywords" content="SMPP, SMPP Tester, HDEV">
+  <meta name="author" content="HDEV TECH Ltd">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>HDEV SMPP Tester</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -133,10 +133,11 @@
               <label for="short_message">Message:</label>
               <textarea class="form-control" id="short_message" name="short_message" rows="4" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Send</button>
+            <button type="submit" id="sendButton" class="btn btn-primary btn-block">Send</button>
           </div>
         </div>
       </div>
+    </div>
       <div class="col-md-4">
         <div class="results-container">
           <h2>Results</h2>
@@ -148,11 +149,12 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2024 HDEV TECH Ltd. All rights reserved.<br>Developed by <a href="https://hdev.rw" target="_blank" class="text-primary">HDEV TECH Ltd</p>
+    <p>&copy; 2024 HDEV TECH Ltd. All rights reserved.<br>Developed by <a href="https://hdev.rw" target="_blank" class="text-primary">HDEV TECH Ltd</a></p>
   </footer>
 
   <script>
     const form = document.getElementById('smppForm');
+    const sendButton = document.getElementById('sendButton');
     const logsContainer = document.getElementById('logs');
     const ws = new WebSocket('ws://'+window.location.host+'');
 
@@ -193,6 +195,22 @@
 
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
+
+      // Disable button and start countdown
+      let countdown = 5;
+      sendButton.disabled = true;
+      sendButton.textContent = `Sending (${countdown})`;
+      
+      const interval = setInterval(() => {
+        countdown -= 1;
+        if (countdown <= 0) {
+          clearInterval(interval);
+          sendButton.disabled = false;
+          sendButton.textContent = 'Send';
+        } else {
+          sendButton.textContent = `Sending (${countdown})`;
+        }
+      }, 1000);
 
       fetch('/send-message', {
         method: 'POST',
