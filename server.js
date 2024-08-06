@@ -87,8 +87,13 @@ app.post('/send-message', (req, res) => {
       message: 'Sending message...',
       icon: '📩'
     })));
-
-    session.submit_sm({ source_addr, destination_addr, short_message }, (pdu) => {
+  
+    session.submit_sm({
+      source_addr,
+      destination_addr,
+      short_message,
+      registered_delivery: 1 // Request delivery report
+    }, (pdu) => {
       if (pdu.command_status === 0) {
         const formattedPDU = formatPDU(pdu);
         wss.clients.forEach(client => client.send(JSON.stringify({
@@ -97,7 +102,7 @@ app.post('/send-message', (req, res) => {
           status: 'Message submitted successfully',
           icon: '✔️'
         })));
-
+  
         wss.clients.forEach(client => client.send(JSON.stringify({
           type: 'info',
           message: 'Waiting for delivery report...',
@@ -110,7 +115,7 @@ app.post('/send-message', (req, res) => {
           icon: '❌'
         })));
       }
-    //   session.unbind();
+      // session.unbind();
     });
 
     session.on('deliver_sm', (pdu) => {
