@@ -6,7 +6,7 @@ const app = express();
 const wss = new WebSocket.Server({ noServer: true });
 
 app.use(bodyParser.json());
-app.use(express.static('public')); // Serve static files from the 'public' directory
+app.use(express.static('Public')); // Serve static files from the 'public' directory
 
 // Function to parse the short message to get only the text portion
 const parseShortMessage = (short_message) => {
