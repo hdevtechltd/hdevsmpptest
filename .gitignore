@@ -1,0 +1,5 @@
+# ignore nodejs default modules\
+node_modules/
+# ignore the build folder
+build/
+# ignore the dist folder

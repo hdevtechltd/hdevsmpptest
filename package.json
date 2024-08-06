@@ -1,0 +1,19 @@
+{
+  "name": "hdevsmpptest",
+  "version": "1.0.0",
+  "description": "This is the smpptesting tool",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "IZERE HIRWA Roger",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "smpp": "^0.6.0-rc.4",
+    "winston": "^3.13.1",
+    "ws": "^8.18.0"
+  }
+}
